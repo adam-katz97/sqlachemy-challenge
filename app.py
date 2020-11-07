@@ -42,8 +42,15 @@ def precipitation():
 
     return jsonify(percip)
 
-#@app.route("/api/v1.0/stations")
-#def stations():
+@app.route("/api/v1.0/stations")
+def stations():
+    session = Session(engine)
+    stations = session.query(Measurement.station).group_by(Measurement.station)
+    session.close()
+    stat_lis=[]
+    for station in stations:
+        stat_lis.append(station)
+    return jsonify(stat_lis)
 
 #@app.route("/api/v1.0/tobs")
 #def tobs():
