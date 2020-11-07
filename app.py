@@ -52,8 +52,16 @@ def stations():
         stat_lis.append(station)
     return jsonify(stat_lis)
 
-#@app.route("/api/v1.0/tobs")
-#def tobs():
+@app.route("/api/v1.0/tobs")
+def tobs():
+    session=Session(engine)
+    active=session.query(Measurement.date, Measurement.tobs).filter(Measurement.station=="USC00519281", Measurement.date>="2016-08-18").order_by(Measurement.date.desc())
+    session.close()
+    temp={}
+    for date, tobs in active: 
+        temp[date]=tobs
+    return jsonify(temp)
+
 
 
 if __name__ == "__main__":
