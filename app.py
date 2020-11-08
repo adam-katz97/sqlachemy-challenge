@@ -71,7 +71,14 @@ def summary_start(start):
     sum_stat=list(summary)
     
     return jsonify(sum_stat)
-
+@app.route("/api/v1.0/<start>/<end>")
+def ranged_stats(start, end):
+    session=Session(engine)
+    stats=[Measurement.date, func.max(Measurement.tobs), func.min(Measurement.tobs), func.avg(Measurement.tobs)]
+    ranged_data=session.query(*stats).group_by(Measurement.date).filter(Measurement.date>=start, Measurement.date<=end).all()
+    session.close()
+    temp_list=list(ranged_data)
+    return jsonify(temp_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
