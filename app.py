@@ -1,5 +1,5 @@
 import numpy as np
-
+import datetime as dt
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -61,7 +61,16 @@ def tobs():
     for date, tobs in active: 
         temp[date]=tobs
     return jsonify(temp)
-
+@app.route("/api/v1.0/<start>")
+def summary_start(start):
+    
+    session=Session(engine)
+    stats=[Measurement.date, func.max(Measurement.tobs), func.min(Measurement.tobs), func.avg(Measurement.tobs)]
+    summary=session.query(*stats).group_by(Measurement.date).filter(Measurement.date>=start).all()
+    session.close()
+    sum_stat=list(summary)
+    
+    return jsonify(sum_stat)
 
 
 if __name__ == "__main__":
