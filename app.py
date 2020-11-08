@@ -19,11 +19,11 @@ session = Session(engine)
 # 3. Define what to do when a user hits the index route
 @app.route("/")
 def home():
-    return (f"Percipitation <br/>"
-    f"Stations <br/>"
-    f"tobs <br/>"
-    f"Start <br/>"
-    f"Start/end<br/>")
+    return (f"/api/v1.0/precipitation <br/>"
+    f"/api/v1.0/stations <br/>"
+    f"/api/v1.0/tobs <br/>"
+    f"/api/v1.0/start <br/>"
+    f"/api/v1.0/start/end <br/>")
     
      
 
